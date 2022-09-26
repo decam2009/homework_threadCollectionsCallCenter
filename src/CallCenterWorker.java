@@ -4,7 +4,7 @@ import java.util.concurrent.BlockingQueue;
 public class CallCenterWorker implements Runnable {
     private final int capacity;
     private final BlockingQueue<String> messages;
-    private static int SLEEPTIME = 3000;
+    private static final int SLEEPTIME = 3000;
 
     public CallCenterWorker(BlockingQueue<String> messages, int capacity) {
         this.messages = messages;

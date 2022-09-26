@@ -2,16 +2,16 @@ import java.util.concurrent.*;
 
 public class Main {
 
-    private static final int messagesCount = 60;
-    private static final BlockingQueue<String> messages = new ArrayBlockingQueue<>(messagesCount);
-    private static final ExecutorService executorService = Executors.newFixedThreadPool(4);
+    private static final int MESSAGESCOUNT = 60;
+    private static final BlockingQueue<String> MESSAGES = new ArrayBlockingQueue<>(MESSAGESCOUNT);
+    private static final ExecutorService EXECUTORSERVICE = Executors.newFixedThreadPool(4);
     private static final int SLEEPTIME = 1000;
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         new Thread(() -> {
-            for (int i = 0; i < messagesCount; i++) {
-                messages.add("Сообщение " + i);
+            for (int i = 0; i < MESSAGESCOUNT; i++) {
+                MESSAGES.add("Сообщение " + i);
                 System.out.println("Поступило сообщение " + i);
                 try {
                     Thread.sleep(SLEEPTIME);
@@ -21,8 +21,8 @@ public class Main {
             }
         }).start();
 
-        Future<?> future = executorService.submit(new CallCenterWorker(messages, messagesCount));
+        Future<?> future = EXECUTORSERVICE.submit(new CallCenterWorker(MESSAGES, MESSAGESCOUNT));
         System.out.println(future.get());
-        executorService.shutdown();
+        EXECUTORSERVICE.shutdown();
     }
 }

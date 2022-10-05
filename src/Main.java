@@ -1,13 +1,17 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class Main {
 
-    private static final int MESSAGESCOUNT = 60;
+    private static final int MESSAGESCOUNT = 5;
+    private static final int POOLSIZE = 3;
     private static final BlockingQueue<String> MESSAGES = new ArrayBlockingQueue<>(MESSAGESCOUNT);
-    private static final ExecutorService EXECUTORSERVICE = Executors.newFixedThreadPool(4);
+    private static final ExecutorService EXECUTORSERVICE = Executors.newFixedThreadPool(POOLSIZE);
     private static final int SLEEPTIME = 1000;
+    private final static List<Future<?>> futureList = new ArrayList<>();
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) {
 
         new Thread(() -> {
             for (int i = 0; i < MESSAGESCOUNT; i++) {
@@ -21,8 +25,9 @@ public class Main {
             }
         }).start();
 
-        Future<?> future = EXECUTORSERVICE.submit(new CallCenterWorker(MESSAGES, MESSAGESCOUNT));
-        System.out.println(future.get());
+        for (int i = 0; i < POOLSIZE; i++) {
+            EXECUTORSERVICE.execute(new CallCenterWorker(MESSAGES, MESSAGESCOUNT));
+        }
         EXECUTORSERVICE.shutdown();
     }
 }

@@ -2,22 +2,21 @@
 import java.util.concurrent.BlockingQueue;
 
 public class CallCenterWorker implements Runnable {
-    private final int capacity;
-    private final BlockingQueue<String> messages;
-    private static final int SLEEPTIME = 3000;
+    private final int CAPACITY;
+    private final BlockingQueue<String> MESSAGES;
+    private static final int SLEEPTIME = 2000;
 
     public CallCenterWorker(BlockingQueue<String> messages, int capacity) {
-        this.messages = messages;
-        this.capacity = capacity;
+        this.MESSAGES = messages;
+        this.CAPACITY = capacity;
     }
 
     @Override
     public void run() {
-        for (int i = 0; i < capacity; i++) {
+        for (int i = 0; i < CAPACITY; i++) {
             try {
                 Thread.sleep(SLEEPTIME);
-                System.out.println("Специалист работает над вашим вопросм.");
-                System.out.println("Обработали звонок " + messages.take());
+                System.out.println("Обработали звонок " + MESSAGES.take());
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
